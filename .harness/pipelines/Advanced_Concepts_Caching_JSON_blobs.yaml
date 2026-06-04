@@ -1,0 +1,104 @@
+pipeline:
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: Stage A
+        identifier: Stage_A
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: false
+          caching:
+            enabled: true
+            override: false
+            paths:
+              - /harness/testcache
+            key: ci-exercise-<+pipeline.executionId>
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Create file
+                  identifier: Create_file
+                  spec:
+                    shell: Sh
+                    command: |-
+                      mkdir -p /harness/testcache
+                      echo '{"targets": ["dev_builder", "dev_integration", "prod_builder"], "team_count": 3}' > /harness/testcache/targets.json
+                      cat /harness/testcache/targets.json
+          sharedPaths:
+            - /harness/testcache
+          buildIntelligence:
+            enabled: false
+    - stage:
+        name: Stage B
+        identifier: StageB
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: false
+          caching:
+            enabled: true
+            override: false
+            paths:
+              - /harness/testcache
+            key: ci-exercise-<+pipeline.executionId>
+          buildIntelligence:
+            enabled: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: List file contents
+                  identifier: List_files
+                  spec:
+                    shell: Sh
+                    command: cat /harness/testcache/targets.json
+          sharedPaths:
+            - /harness/testcache
+    - stage:
+        name: Stage C
+        identifier: Stage_C
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: false
+          caching:
+            enabled: false
+            override: false
+            paths: []
+          sharedPaths:
+            - /harness/testcache
+          buildIntelligence:
+            enabled: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Echo
+                  identifier: Echo
+                  spec:
+                    shell: Sh
+                    command: echo "stage C"
+  identifier: Advanced_Concepts_Caching_JSON_blobs
+  name: Advanced Concepts - Caching JSON blobs
