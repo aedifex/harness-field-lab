@@ -32,7 +32,7 @@ pipeline:
                     shell: Sh
                     command: |-
                       mkdir -p /harness/testcache
-                      echo '{"targets": ["dev_builder", "dev_integration", "prod_builder"], "team_count": 3}' > /harness/testcache/targets.json
+                      echo '{"targets": ["dev_builder", "dev_integration", "prod_builder"], "team_count": 33}' > /harness/testcache/targets.json
                       cat /harness/testcache/targets.json
           sharedPaths:
             - /harness/testcache
