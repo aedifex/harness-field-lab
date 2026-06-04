@@ -99,6 +99,6 @@ pipeline:
                   identifier: Echo
                   spec:
                     shell: Sh
-                    command: echo "stage C"
+                    command: ls -alt
   identifier: Advanced_Concepts_Caching_JSON_blobs
   name: Advanced Concepts - Caching JSON blobs
