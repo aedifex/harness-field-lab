@@ -99,6 +99,9 @@ pipeline:
                   identifier: Echo
                   spec:
                     shell: Sh
-                    command: ls -alt /harness/testcache/
+                    command: |-
+                      cd /harness/testcache/
+
+                      ls
   identifier: Advanced_Concepts_Caching_JSON_blobs
   name: Advanced Concepts - Caching JSON blobs
