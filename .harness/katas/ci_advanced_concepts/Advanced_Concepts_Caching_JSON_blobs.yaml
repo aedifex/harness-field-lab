@@ -80,7 +80,9 @@ pipeline:
           caching:
             enabled: true
             override: false
-            paths: []
+            paths:
+              - /harness/testcache
+            key: ci-exercise-<+pipeline.executionId>
           sharedPaths:
             - /harness/testcache
           buildIntelligence:
@@ -101,7 +103,7 @@ pipeline:
                     shell: Sh
                     command: |-
                       cd /harness/testcache/
-
                       ls
+                      cat targets.json
   identifier: Advanced_Concepts_Caching_JSON_blobs
   name: Advanced Concepts - Caching JSON blobs
