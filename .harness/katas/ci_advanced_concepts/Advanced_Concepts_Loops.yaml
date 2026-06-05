@@ -1,0 +1,119 @@
+pipeline:
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - parallel:
+        - stage:
+            name: Stage A - Repeat N iterations
+            identifier: Stage_A
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: false
+              caching:
+                enabled: false
+                override: false
+                paths:
+                  - /harness/testcache
+                key: ci-exercise-<+pipeline.executionId>
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: Say hi
+                      identifier: Create_file
+                      spec:
+                        shell: Sh
+                        command: "echo \"Hello from iteration: <+repeat.item>\""
+              sharedPaths:
+                - /harness/testcache
+              buildIntelligence:
+                enabled: false
+            strategy:
+              repeat:
+                items:
+                  - one
+                  - two
+                  - three
+                maxConcurrency: 1
+        - stage:
+            name: Stage B - Matrix Builds
+            identifier: StageB
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: false
+              caching:
+                enabled: false
+                override: false
+                paths:
+                  - /harness/testcache
+                key: ci-exercise-<+pipeline.executionId>
+              buildIntelligence:
+                enabled: false
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: Say hi
+                      identifier: List_files
+                      spec:
+                        shell: Sh
+                        command: |-
+                          echo "Browser: <+matrix.browser>"
+                          echo "OS: <+matrix.os>"
+              sharedPaths:
+                - /harness/testcache
+            strategy:
+              matrix:
+                browser:
+                  - chrome
+                  - safari
+                  - firefox
+                os:
+                  - macos
+                  - windows
+                  - linux
+                maxConcurrency: 3
+        - stage:
+            name: Stage C - Concurrency
+            identifier: Stage_C_Concurrency
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: false
+              caching:
+                enabled: true
+                override: false
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: Say Hi
+                      identifier: Say_Hi
+                      spec:
+                        shell: Sh
+                        command: echo "hi"
+            strategy:
+              parallelism: 2
+  identifier: Advanced_Concepts_Loops
+  name: Advanced Concepts - Loops
