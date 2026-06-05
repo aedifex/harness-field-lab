@@ -78,7 +78,7 @@ pipeline:
         spec:
           cloneCodebase: false
           caching:
-            enabled: false
+            enabled: true
             override: false
             paths: []
           sharedPaths:
